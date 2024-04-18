@@ -22,6 +22,7 @@ time.sleep(3)
 
 html = driver.page_source
 soup = bs(html, "html.parser")
+title = soup.find('title').text.split(',')[0]
 stop = int(soup.find('strong', class_='_2pgHN-ntx6').text)
 stop = math.ceil((stop) / 20)
 
@@ -49,6 +50,7 @@ time.sleep(3)
 review_list = []
 
 for pagenum in next_btn[0 : stop] :
+    print(pagenum)
     driver.find_element(By.CSS_SELECTOR, '#REVIEW > div > div._2LvIMaBiIO > div._2g7PKvqCKe > div > div >' +str(pagenum)).click()       #리뷰 클릭창
     html = driver.page_source
     soup = bs(html, "html.parser")
@@ -56,12 +58,10 @@ for pagenum in next_btn[0 : stop] :
     time.sleep(2)
     for i in range(0, len(review)) :
         temp = review[i].text
-        temp = re.sub('[^#0-9a-zA-Zㄱ-ㅣ가-힣 ]',"",temp) 
         if len(temp) <= 10 :
             continue
         review_list.append(temp)
 
-for i in range(0, len(review_list)) :
-    print(str(i) + " : " + review_list[i])
-# print(review_list)
-# review_list
+df = pd.DataFrame({"리뷰" : review_list})
+df.to_csv(title, encoding='utf-8')
+print("저장완료")
