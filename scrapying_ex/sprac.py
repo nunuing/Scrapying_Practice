@@ -63,5 +63,5 @@ for pagenum in next_btn[0 : stop] :
         review_list.append(temp)
 
 df = pd.DataFrame({"리뷰" : review_list})
-df.to_csv(title, encoding='utf-8')
+df.to_csv(title + ".csv", encoding='utf-8')
 print("저장완료")
